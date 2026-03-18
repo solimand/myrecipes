@@ -1,0 +1,46 @@
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# --- Dependencies ---
+node_modules/
+.pnpm-store/
+
+# --- Build Output ---
+dist/
+.astro/
+
+# --- Environment Secrets (CRITICAL) ---
+.env
+*.env.*
+!.env.example
+
+# --- Editor / OS ---
+.vscode/
+.DS_Store
+Thumbs.db
+
+# --- Sanity Specific ---
+# If you eventually add a local sanity folder
+.sanity/
