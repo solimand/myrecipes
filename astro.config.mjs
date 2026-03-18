@@ -16,8 +16,8 @@ import react from '@astrojs/react';
 export default defineConfig({
   integrations: [
     sanity({
-      projectId: 'your_id_here', // This is now in your .env file
-      dataset: 'production',
+      projectId: process.env.PUBLIC_SANITY_PROJECT_ID, // Your Sanity project ID
+      dataset: process.env.PUBLIC_SANITY_DATASET, // Your Sanity dataset
       useCdn: false,
       studioBasePath: '/admin', // Your dashboard will be at /admin
     }),
