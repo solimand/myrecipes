@@ -1,9 +1,10 @@
 # 📝 My Recipes
 
 ## 🚨 High Priority
-- [ ] aaa
-- [ ] bbb
+
+- [ ] work on .env
 
 ## 📅 Upcoming
+
 - [x] aaa
 - [ ] bbb
