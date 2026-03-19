@@ -2,9 +2,9 @@
 
 ## 🚨 High Priority
 
-- [ ] work on .env
+- [x] work on .env
+- [ ] fix homepage
 
 ## 📅 Upcoming
 
-- [x] aaa
-- [ ] bbb
+- [ ] images/video optional per recipe

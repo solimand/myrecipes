@@ -1,0 +1,47 @@
+---
+import { sanityClient } from "sanity:client";
+import { PortableText } from '@portabletext/react';
+
+// 1. This function tells Astro which pages to build based on your Sanity data
+export async function getStaticPaths() {
+  const recipes = await sanityClient.fetch(`*[_type == "recipe"]`);
+  return recipes.map((recipe) => ({
+    params: { slug: recipe.slug.current },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{recipe.title} | My Recipes</title>
+    <style>
+        body { font-family: system-ui; max-width: 800px; margin: auto; padding: 2rem; line-height: 1.6; }
+        .ingredient-list { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; }
+        .unit { color: #666; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="/">← Back to Gallery</a>
+    <h1>{recipe.title}</h1>
+    <p><em>Category: {recipe.category}</em></p>
+
+    <div class="ingredient-list">
+        <h3>Ingredients</h3>
+        <ul>
+            {recipe.ingredients?.map((item) => (
+                <li>
+                    <span class="unit">{item.quantity} {item.unit}</span> {item.name}
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <h3>Instructions</h3>
+    {/* This component handles the bold/italic/paragraphs from Sanity */}
+    <PortableText value={recipe.instructions} />
+</body>
+</html>

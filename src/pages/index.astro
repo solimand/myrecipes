@@ -1,11 +1,15 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { sanityClient } from "sanity:client";
+const recipes = await sanityClient.fetch(`*[_type == "recipe"]`);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<h1>My Digital Cookbook</h1>
+<ul>
+  {recipes.map((recipe) => (
+    <li>
+      <a href={`/recipe/${recipe.slug.current}`}>
+        {recipe.title} — ({recipe.category})
+      </a>
+    </li>
+  ))}
+</ul>
