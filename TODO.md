@@ -8,3 +8,4 @@
 ## 📅 Upcoming
 
 - [ ] images/video optional per recipe
+- [ ] implement a search bar with several fields

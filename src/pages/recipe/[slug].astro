@@ -1,8 +1,7 @@
 ---
 import { sanityClient } from "sanity:client";
-import { PortableText } from '@portabletext/react';
+import { urlFor } from "../../utils/urlFor"; // Make sure this path matches your file structure
 
-// 1. This function tells Astro which pages to build based on your Sanity data
 export async function getStaticPaths() {
   const recipes = await sanityClient.fetch(`*[_type == "recipe"]`);
   return recipes.map((recipe) => ({
@@ -19,17 +18,54 @@ const { recipe } = Astro.props;
     <meta charset="utf-8" />
     <title>{recipe.title} | My Recipes</title>
     <style>
-        body { font-family: system-ui; max-width: 800px; margin: auto; padding: 2rem; line-height: 1.6; }
-        .ingredient-list { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; }
-        .unit { color: #666; font-weight: bold; }
+        body { font-family: system-ui, sans-serif; max-width: 800px; margin: auto; padding: 2rem; line-height: 1.6; color: #333; }
+        a { color: #ff4757; text-decoration: none; font-weight: bold; }
+        
+        .ingredient-list { background: #f9f9f9; padding: 1.5rem; border-radius: 12px; margin: 2rem 0; border-left: 5px solid #ff4757; }
+        .unit { color: #666; font-weight: bold; margin-right: 4px; }
+        
+        /* Step Styles */
+        .step-list { list-style: none; padding: 0; }
+        .step-item { display: flex; gap: 1.5rem; margin-bottom: 3rem; align-items: flex-start; }
+        .step-number { 
+            background: #ff4757; color: white; border-radius: 50%; 
+            width: 32px; height: 32px; display: flex; flex-shrink: 0;
+            align-items: center; justify-content: center; font-weight: bold;
+        }
+        .step-content { flex: 1; }
+        .step-image { 
+            display: block; width: 100%; max-width: 400px; 
+            border-radius: 8px; margin-top: 1rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .hero-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover; /* This crops the image nicely to fit the 400px height */
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
-    <a href="/">← Back to Gallery</a>
-    <h1>{recipe.title}</h1>
-    <p><em>Category: {recipe.category}</em></p>
 
-    <div class="ingredient-list">
+    <header>
+        <nav><a href="/">← Back to Dashboard</a></nav>
+        <h1>{recipe.title}</h1>
+        <p><strong>Category:</strong> {recipe.category}</p>
+
+        {/* The Hero Image Section */}
+        {recipe.mainImage && (
+            <img 
+                src={urlFor(recipe.mainImage).width(1200).height(600).url()} 
+                alt={recipe.title} 
+                class="hero-image"
+            />
+        )}
+    </header>
+
+    <section class="ingredient-list">
         <h3>Ingredients</h3>
         <ul>
             {recipe.ingredients?.map((item) => (
@@ -38,10 +74,33 @@ const { recipe } = Astro.props;
                 </li>
             ))}
         </ul>
-    </div>
+    </section>
 
-    <h3>Instructions</h3>
-    {/* This component handles the bold/italic/paragraphs from Sanity */}
-    <PortableText value={recipe.instructions} />
+    <section>
+        <h3>Preparation Steps</h3>
+        <div class="step-list">
+            {recipe.instructions?.map((step, index) => (
+                <div class="step-item">
+                    <div class="step-number">{index + 1}</div>
+                    <div class="step-content">
+                        <p>{step.instruction}</p>
+                        
+                        {/* Only renders the image if you uploaded one for this step */}
+                        {step.stepImage && (
+                            <img 
+                                src={urlFor(step.stepImage).width(800).url()} 
+                                alt={`Step ${index + 1}`} 
+                                class="step-image"
+                            />
+                        )}
+                    </div>
+                </div>
+            ))}
+        </div>
+    </section>
+
+    <footer style="margin-top: 4rem; border-top: 1px solid #eee; padding-top: 2rem;">
+        <p><a href="/">← Return to all recipes</a></p>
+    </footer>
 </body>
 </html>

@@ -65,3 +65,15 @@ If you were starting from scratch or setting this up on a new machine:
     - Column 2: A flat list of every recipe in the database
 
 1. `src/pages/recipe/[slug].astro`: The "Template." This is a dynamic route. It doesn't physically exist for every recipe; instead, it acts as a "mold" that Astro pours Sanity data into to create individual recipe pages on the fly
+
+## Data Portability
+
+Your data is stored as JSON in Sanity:
+
+- To export and get a local backup of all recipes
+
+    ```sh
+    npx sanity dataset export <dataset name>
+    ```
+
+- To Change Tech: You can delete the Astro folder, start a React/Next.js project, and point it at the same projectId to see your recipes instantly (to test)

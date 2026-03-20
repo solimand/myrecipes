@@ -1,14 +1,15 @@
 ---
 import { sanityClient } from "sanity:client";
+import { urlFor } from "../utils/urlFor"; // 1. Import your image helper
 
-// Fetch all recipes
+// 2. Updated Fetch: Added mainImage to the query
 const allRecipes = await sanityClient.fetch(`*[_type == "recipe"]{
   title,
   category,
+  mainImage, 
   "slug": slug.current
 } | order(title asc)`);
 
-// Logic to group recipes by category for the first column
 const recipesByCategory = allRecipes.reduce((acc, recipe) => {
   const cat = recipe.category || "Uncategorized";
   if (!acc[cat]) acc[cat] = [];
@@ -22,11 +23,10 @@ const categories = Object.keys(recipesByCategory).sort();
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>My Recipe Dashboard</title>
     <style>
         body { font-family: system-ui, sans-serif; padding: 2rem; background: #f4f7f6; color: #333; }
-        
-        /* The Magic Grid: Currently 2 columns, easy to expand */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr; 
@@ -55,16 +55,34 @@ const categories = Object.keys(recipesByCategory).sort();
         }
 
         ul { list-style: none; padding: 0; }
-        li { margin: 0.5rem 0; }
-        a { text-decoration: none; color: #2f3542; transition: color 0.2s; }
-        a:hover { color: #ff4757; text-decoration: underline; }
+        li { margin: 0.8rem 0; }
+        
+        /* 3. New flex styles for the list items */
+        .recipe-link-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #2f3542;
+            transition: transform 0.2s;
+        }
+        .recipe-link-wrapper:hover { transform: translateX(5px); }
+        .recipe-link-wrapper:hover span { color: #ff4757; text-decoration: underline; }
+
+        .thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #eee;
+        }
 
         .recipe-tag { 
             font-size: 0.7rem; 
             background: #e1e1e1; 
             padding: 2px 6px; 
             border-radius: 4px; 
-            margin-left: 8px;
+            margin-left: auto; /* Pushes tag to the right */
             color: #666;
         }
     </style>
@@ -83,7 +101,12 @@ const categories = Object.keys(recipesByCategory).sort();
                     <ul>
                         {recipesByCategory[cat].map(recipe => (
                             <li>
-                                <a href={`/recipe/${recipe.slug}`}>{recipe.title}</a>
+                                <a href={`/recipe/${recipe.slug}`} class="recipe-link-wrapper">
+                                    {recipe.mainImage && (
+                                        <img src={urlFor(recipe.mainImage).width(80).height(80).url()} class="thumb" alt="" />
+                                    )}
+                                    <span>{recipe.title}</span>
+                                </a>
                             </li>
                         ))}
                     </ul>
@@ -96,8 +119,13 @@ const categories = Object.keys(recipesByCategory).sort();
             <ul>
                 {allRecipes.map(recipe => (
                     <li>
-                        <a href={`/recipe/${recipe.slug}`}>{recipe.title}</a>
-                        <span class="recipe-tag">{recipe.category}</span>
+                        <a href={`/recipe/${recipe.slug}`} class="recipe-link-wrapper">
+                            {recipe.mainImage && (
+                                <img src={urlFor(recipe.mainImage).width(80).height(80).url()} class="thumb" alt="" />
+                            )}
+                            <span>{recipe.title}</span>
+                            <span class="recipe-tag">{recipe.category}</span>
+                        </a>
                     </li>
                 ))}
             </ul>

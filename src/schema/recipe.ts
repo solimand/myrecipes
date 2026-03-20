@@ -31,6 +31,15 @@ export const recipeType = defineType({
       }
     }),
     defineField({
+      name: 'mainImage',
+      title: 'Recipe Hero Image',
+      type: 'image',
+      options: {
+        hotspot: true, // This allows you to pick the focus point of the photo
+      },
+      // validation: (Rule) => Rule.required(), // not mandatory
+    }),
+    defineField({
       name: 'ingredients',
       title: 'Ingredients',
       type: 'array',
@@ -72,10 +81,37 @@ export const recipeType = defineType({
         }
       ]
     }),
-    defineField({ 
-      name: 'instructions', 
-      type: 'array', 
-      of: [{ type: 'block' }] 
+    defineField({
+      name: 'instructions',
+      title: 'Preparation Steps',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'step',
+          fields: [
+            defineField({ 
+              name: 'instruction', 
+              type: 'text', 
+              title: 'Step Description',
+              rows: 3 
+            }),
+            defineField({ 
+              name: 'stepImage', 
+              type: 'image', 
+              title: 'Step Photo (Optional)',
+              options: { hotspot: true } // Allows you to crop the image in the browser
+            })
+          ],
+          // This makes the list look clean in the Sanity editor
+          preview: {
+            select: {
+              title: 'instruction',
+              media: 'stepImage'
+            }
+          }
+        }
+      ]
     }),
     defineField({
       name: 'externalLink',
