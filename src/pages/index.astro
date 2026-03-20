@@ -1,15 +1,109 @@
 ---
 import { sanityClient } from "sanity:client";
-const recipes = await sanityClient.fetch(`*[_type == "recipe"]`);
+
+// Fetch all recipes
+const allRecipes = await sanityClient.fetch(`*[_type == "recipe"]{
+  title,
+  category,
+  "slug": slug.current
+} | order(title asc)`);
+
+// Logic to group recipes by category for the first column
+const recipesByCategory = allRecipes.reduce((acc, recipe) => {
+  const cat = recipe.category || "Uncategorized";
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(recipe);
+  return acc;
+}, {});
+
+const categories = Object.keys(recipesByCategory).sort();
 ---
 
-<h1>My Digital Cookbook</h1>
-<ul>
-  {recipes.map((recipe) => (
-    <li>
-      <a href={`/recipe/${recipe.slug.current}`}>
-        {recipe.title} — ({recipe.category})
-      </a>
-    </li>
-  ))}
-</ul>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>My Recipe Dashboard</title>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 2rem; background: #f4f7f6; color: #333; }
+        
+        /* The Magic Grid: Currently 2 columns, easy to expand */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .column {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            min-height: 80vh;
+        }
+
+        h1 { grid-column: 1 / -1; margin-bottom: 2rem; color: #1a1a1a; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 0; font-size: 1.2rem; }
+        
+        .category-block { margin-bottom: 1.5rem; }
+        .category-name { 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            color: #ff4757; 
+            letter-spacing: 1px;
+        }
+
+        ul { list-style: none; padding: 0; }
+        li { margin: 0.5rem 0; }
+        a { text-decoration: none; color: #2f3542; transition: color 0.2s; }
+        a:hover { color: #ff4757; text-decoration: underline; }
+
+        .recipe-tag { 
+            font-size: 0.7rem; 
+            background: #e1e1e1; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            margin-left: 8px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>My Gourmet Corner</h1>
+
+    <div class="dashboard-grid">
+        
+        <section class="column">
+            <h2>Categories</h2>
+            {categories.map(cat => (
+                <div class="category-block">
+                    <span class="category-name">{cat}</span>
+                    <ul>
+                        {recipesByCategory[cat].map(recipe => (
+                            <li>
+                                <a href={`/recipe/${recipe.slug}`}>{recipe.title}</a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </section>
+
+        <section class="column">
+            <h2>All Recipes ({allRecipes.length})</h2>
+            <ul>
+                {allRecipes.map(recipe => (
+                    <li>
+                        <a href={`/recipe/${recipe.slug}`}>{recipe.title}</a>
+                        <span class="recipe-tag">{recipe.category}</span>
+                    </li>
+                ))}
+            </ul>
+        </section>
+
+    </div>
+
+</body>
+</html>
