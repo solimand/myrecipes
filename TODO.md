@@ -2,10 +2,12 @@
 
 ## 🚨 High Priority
 
-- [x] work on .env
-- [ ] fix homepage
+- [ ] fix icon
 
 ## 📅 Upcoming
 
-- [ ] images/video optional per recipe
 - [ ] implement a search bar with several fields
+
+## Fix
+
+- [ ] original link not shown on all recipes

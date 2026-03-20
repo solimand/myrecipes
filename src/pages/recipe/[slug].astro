@@ -98,6 +98,18 @@ const { recipe } = Astro.props;
             ))}
         </div>
     </section>
+    
+    {recipe.externalLink && (
+        <section class="resources-section">
+            <h3>Resources</h3>
+            <p>
+                To see more details, visit the 
+                <a href={recipe.externalLink} target="_blank" rel="noopener noreferrer">
+                    Original Source Link
+                </a>.
+            </p>
+        </section>
+    )}
 
     <footer style="margin-top: 4rem; border-top: 1px solid #eee; padding-top: 2rem;">
         <p><a href="/">← Return to all recipes</a></p>
