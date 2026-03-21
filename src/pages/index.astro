@@ -1,8 +1,7 @@
 ---
 import { sanityClient } from "sanity:client";
-import { urlFor } from "../utils/urlFor"; // 1. Import your image helper
+import { urlFor } from "../utils/urlFor";
 
-// 2. Updated Fetch: Added mainImage to the query
 const allRecipes = await sanityClient.fetch(`*[_type == "recipe"]{
   title,
   category,
@@ -18,20 +17,36 @@ const recipesByCategory = allRecipes.reduce((acc, recipe) => {
 }, {});
 
 const categories = Object.keys(recipesByCategory).sort();
+// Define base once for cleaner HTML
+const base = import.meta.env.BASE_URL;
 ---
 
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <title>My Recipe Dashboard</title>
     <style>
-        body { font-family: system-ui, sans-serif; padding: 2rem; background: #f4f7f6; color: #333; }
+        /* Base styles */
+        body { font-family: system-ui, sans-serif; padding: 1rem; background: #f4f7f6; color: #333; margin: 0; }
+        
+        /* 1. Mobile First: Single Column */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; 
-            gap: 2rem;
-            align-items: start;
+            grid-template-columns: 1fr; 
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 2. Desktop: Two Columns (for screens wider than 768px) */
+        @media (min-width: 768px) {
+            body { padding: 2rem; }
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
         }
 
         .column {
@@ -39,10 +54,14 @@ const categories = Object.keys(recipesByCategory).sort();
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            min-height: 80vh;
+            height: fit-content; /* Adjusts to content height on mobile */
         }
 
-        h1 { grid-column: 1 / -1; margin-bottom: 2rem; color: #1a1a1a; }
+        @media (min-width: 768px) {
+            .column { min-height: 80vh; }
+        }
+
+        h1 { text-align: center; margin-bottom: 2rem; color: #1a1a1a; }
         h2 { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 0; font-size: 1.2rem; }
         
         .category-block { margin-bottom: 1.5rem; }
@@ -57,7 +76,6 @@ const categories = Object.keys(recipesByCategory).sort();
         ul { list-style: none; padding: 0; }
         li { margin: 0.8rem 0; }
         
-        /* 3. New flex styles for the list items */
         .recipe-link-wrapper {
             display: flex;
             align-items: center;
@@ -75,6 +93,7 @@ const categories = Object.keys(recipesByCategory).sort();
             border-radius: 6px;
             object-fit: cover;
             background: #eee;
+            flex-shrink: 0; /* Prevents image from squishing on small screens */
         }
 
         .recipe-tag { 
@@ -82,8 +101,9 @@ const categories = Object.keys(recipesByCategory).sort();
             background: #e1e1e1; 
             padding: 2px 6px; 
             border-radius: 4px; 
-            margin-left: auto; /* Pushes tag to the right */
+            margin-left: auto; 
             color: #666;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -101,7 +121,7 @@ const categories = Object.keys(recipesByCategory).sort();
                     <ul>
                         {recipesByCategory[cat].map(recipe => (
                             <li>
-                                <a href={`${import.meta.env.BASE_URL}/recipe/${recipe.slug}`} class="recipe-link-wrapper">
+                                <a href={`${base}/recipe/${recipe.slug}`} class="recipe-link-wrapper">
                                     {recipe.mainImage && (
                                         <img src={urlFor(recipe.mainImage).width(80).height(80).url()} class="thumb" alt="" />
                                     )}
@@ -119,7 +139,7 @@ const categories = Object.keys(recipesByCategory).sort();
             <ul>
                 {allRecipes.map(recipe => (
                     <li>
-                        <a href={`${import.meta.env.BASE_URL}/recipe/${recipe.slug}`} class="recipe-link-wrapper">
+                        <a href={`${base}/recipe/${recipe.slug}`} class="recipe-link-wrapper">
                             {recipe.mainImage && (
                                 <img src={urlFor(recipe.mainImage).width(80).height(80).url()} class="thumb" alt="" />
                             )}
