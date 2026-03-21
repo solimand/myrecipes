@@ -101,7 +101,7 @@ const categories = Object.keys(recipesByCategory).sort();
                     <ul>
                         {recipesByCategory[cat].map(recipe => (
                             <li>
-                                <a href={`/recipe/${recipe.slug}`} class="recipe-link-wrapper">
+                                <a href={`${import.meta.env.BASE_URL}/recipe/${recipe.slug}`} class="recipe-link-wrapper">
                                     {recipe.mainImage && (
                                         <img src={urlFor(recipe.mainImage).width(80).height(80).url()} class="thumb" alt="" />
                                     )}
@@ -119,7 +119,7 @@ const categories = Object.keys(recipesByCategory).sort();
             <ul>
                 {allRecipes.map(recipe => (
                     <li>
-                        <a href={`/recipe/${recipe.slug}`} class="recipe-link-wrapper">
+                        <a href={`${import.meta.env.BASE_URL}/recipe/${recipe.slug}`} class="recipe-link-wrapper">
                             {recipe.mainImage && (
                                 <img src={urlFor(recipe.mainImage).width(80).height(80).url()} class="thumb" alt="" />
                             )}
