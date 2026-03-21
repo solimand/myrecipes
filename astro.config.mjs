@@ -12,12 +12,15 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
 );
 
 export default defineConfig({
+  site: 'https://solimand.github.io',
+  base: '/myrecipes',
   integrations: [
     sanity({
       projectId: PUBLIC_SANITY_PROJECT_ID,
       dataset: PUBLIC_SANITY_DATASET,
       useCdn: false,
-      studioBasePath: '/admin',
+      // studioBasePath: '/admin',
+      // studio: import.meta.env.DEV ? { path: "/admin" } : false,
     }),
     react(),
   ],
