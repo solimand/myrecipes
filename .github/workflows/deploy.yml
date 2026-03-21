@@ -15,8 +15,16 @@ jobs:
     steps:
       - name: Checkout your repository
         uses: actions/checkout@v4
+
+      # ADD THESE LINES HERE TO FIX THE ERROR
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22 # This tells GitHub to use the latest Node 22
+
       - name: Install, build, and upload
         uses: withastro/action@v3
         env:
           PUBLIC_SANITY_PROJECT_ID: ${{ secrets.PUBLIC_SANITY_PROJECT_ID }}
           PUBLIC_SANITY_DATASET: ${{ secrets.PUBLIC_SANITY_DATASET }}
+          
