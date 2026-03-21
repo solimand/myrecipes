@@ -18,35 +18,60 @@ const base = import.meta.env.BASE_URL;
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{recipe.title} | My Recipes</title>
     <style>
-        body { font-family: system-ui, sans-serif; max-width: 800px; margin: auto; padding: 2rem; line-height: 1.6; color: #333; }
+        /* 2. UPDATED: Improved mobile typography */
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 1rem; /* Smaller padding for mobile */
+            line-height: 1.6;
+            color: #333;
+            font-size: 1.1rem; /* Base size slightly larger */
+        }
+
+        @media (min-width: 768px) {
+            body { padding: 2rem; font-size: 1.15rem; }
+        }
+
         a { color: #ff4757; text-decoration: none; font-weight: bold; }
-        
+
         .ingredient-list { background: #f9f9f9; padding: 1.5rem; border-radius: 12px; margin: 2rem 0; border-left: 5px solid #ff4757; }
         .unit { color: #666; font-weight: bold; margin-right: 4px; }
-        
+
         /* Step Styles */
         .step-list { list-style: none; padding: 0; }
-        .step-item { display: flex; gap: 1.5rem; margin-bottom: 3rem; align-items: flex-start; }
-        .step-number { 
-            background: #ff4757; color: white; border-radius: 50%; 
+        .step-item { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+
+        @media (min-width: 768px) {
+            .step-item { flex-direction: row; gap: 1.5rem; }
+        }
+
+        .step-number {
+            background: #ff4757; color: white; border-radius: 50%;
             width: 32px; height: 32px; display: flex; flex-shrink: 0;
             align-items: center; justify-content: center; font-weight: bold;
         }
+
         .step-content { flex: 1; }
-        .step-image { 
-            display: block; width: 100%; max-width: 400px; 
-            border-radius: 8px; margin-top: 1rem; 
+        /* Make sure instructions are easy to read */
+        .step-content p { margin-top: 0; line-height: 1.7; }
+
+        .step-image {
+            display: block; width: 100%; max-width: 400px;
+            border-radius: 8px; margin-top: 1rem;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+
         .hero-image {
             width: 100%;
-            height: 400px;
-            object-fit: cover; /* This crops the image nicely to fit the 400px height */
+            height: auto; /* Changed to auto for better mobile aspect ratio */
+            max-height: 400px;
+            object-fit: cover;
             border-radius: 12px;
-            margin: 1.5rem 0;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0;
         }
     </style>
 </head>
@@ -59,9 +84,9 @@ const base = import.meta.env.BASE_URL;
 
         {/* The Hero Image Section */}
         {recipe.mainImage && (
-            <img 
-                src={urlFor(recipe.mainImage).width(1200).height(600).url()} 
-                alt={recipe.title} 
+            <img
+                src={urlFor(recipe.mainImage).width(1200).height(600).url()}
+                alt={recipe.title}
                 class="hero-image"
             />
         )}
@@ -86,12 +111,12 @@ const base = import.meta.env.BASE_URL;
                     <div class="step-number">{index + 1}</div>
                     <div class="step-content">
                         <p>{step.instruction}</p>
-                        
+
                         {/* Only renders the image if you uploaded one for this step */}
                         {step.stepImage && (
-                            <img 
-                                src={urlFor(step.stepImage).width(800).url()} 
-                                alt={`Step ${index + 1}`} 
+                            <img
+                                src={urlFor(step.stepImage).width(800).url()}
+                                alt={`Step ${index + 1}`}
                                 class="step-image"
                             />
                         )}
@@ -100,12 +125,12 @@ const base = import.meta.env.BASE_URL;
             ))}
         </div>
     </section>
-    
+
     {recipe.externalLink && (
         <section class="resources-section">
             <h3>Resources</h3>
             <p>
-                To see more details, visit the 
+                To see more details, visit the
                 <a href={recipe.externalLink} target="_blank" rel="noopener noreferrer">
                     Original Source Link
                 </a>.
