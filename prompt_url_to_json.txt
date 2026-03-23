@@ -1,0 +1,45 @@
+Task: Act as a culinary data engineer. Extract the recipe from the provided text/URL into a strictly formatted JSON object that matches my database schema.
+
+Rules:
+- Category: Must be exactly one of these: pasta, vellutate, risotti, dolci, or tbd.
+- Slug: Create a URL-friendly slug from the title (lowercase, hyphens, no special characters).
+- Units: Map measurements to these values: g, kg, ml, l, or q.b.. If it doesn't fit, use a string but try to match these where possible.
+- Structure: Use the exact key names and nested objects below.
+
+Required JSON Structure:
+{
+  "_type": "recipe",
+  "title": "Recipe Name",
+  "slug": { "_type": "slug", "current": "recipe-name" },
+  "category": "pasta",
+  "externalLink": "URL of the source",
+  "ingredients": [
+    {
+      "_type": "object",
+      "name": "Ingredient Name",
+      "quantity": 100,
+      "unit": "g"
+    }
+  ],
+  "instructions": [
+    {
+      "_type": "object",
+      "instruction": "Step-by-step description"
+    }
+  ]
+}
+
+Input Content: <website>
+
+---------------------------------------------------------------------------------------------------
+
+curl https://<projID>.api.sanity.io/v2021-06-07/data/mutate/production \
+  -H "Authorization: Bearer YOUR_SANITY_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "mutations": [
+      {
+        "create": [PASTE_AI_JSON_HERE]
+      }
+    ]
+  }'
