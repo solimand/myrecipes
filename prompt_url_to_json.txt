@@ -43,3 +43,94 @@ curl https://<projID>.api.sanity.io/v2021-06-07/data/mutate/production \
       }
     ]
   }'
+
+---------------------------------------------------------------------------------------------------
+
+Example
+Correct Body for Curl
+
+  {
+  "mutations": [
+    {
+      "create": {
+        "_type": "recipe",
+        "title": "Pasta ai funghi cremosa",
+        "slug": {
+          "_type": "slug",
+          "current": "pasta-ai-funghi-cremosa"
+        },
+        "category": "pasta",
+        "ingredients": [
+          {
+            "name": "Penne",
+            "quantity": 320,
+            "unit": "g"
+          },
+          {
+            "name": "Funghi",
+            "quantity": 300,
+            "unit": "g"
+          },
+          {
+            "name": "Cipolla",
+            "quantity": 1
+          },
+          {
+            "name": "Concentrato di pomodoro",
+            "quantity": 30,
+            "unit": "g"
+          },
+          {
+            "name": "Panna fresca",
+            "quantity": 200,
+            "unit": "g"
+          },
+          {
+            "name": "Formaggio grattugiato",
+            "quantity": 40,
+            "unit": "g"
+          },
+          {
+            "name": "Olio d'oliva",
+            "unit": "q.b."
+          },
+          {
+            "name": "Sale fino",
+            "unit": "q.b."
+          },
+          {
+            "name": "Prezzemolo tritato",
+            "unit": "q.b."
+          }
+        ],
+        "instructions": [
+          {
+            "instruction": "Tagliamo i funghi a fettine non troppo sottili."
+          },
+          {
+            "instruction": "Versiamo un filo di olio d'oliva in una padella antiaderente spaziosa e facciamo rosolare la cipolla tritata."
+          },
+          {
+            "instruction": "Aggiungiamo i funghi, saliamo e lasciamoli appassire per un paio di minuti mescolando ogni tanto."
+          },
+          {
+            "instruction": "Nel frattempo, cuociamo la pasta in abbondante acqua bollente salata."
+          },
+          {
+            "instruction": "Aggiungiamo al condimento il concentrato di pomodoro e la panna fresca, mescolando fino a far addensare leggermente la salsa."
+          },
+          {
+            "instruction": "Scoliamo la pasta e trasferiamola nella padella con il condimento."
+          },
+          {
+            "instruction": "Uniamo il formaggio grattugiato e il prezzemolo tritato, amalgamando bene il tutto."
+          },
+          {
+            "instruction": "Serviamo la pasta ai funghi cremosa ben calda."
+          }
+        ],
+        "externalLink": "https://www.fattoincasadabenedetta.it/ricetta/pasta-ai-funghi-cremosa/"
+      }
+    }
+  ]
+}
