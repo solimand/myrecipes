@@ -19,8 +19,6 @@ export default defineConfig({
       projectId: PUBLIC_SANITY_PROJECT_ID,
       dataset: PUBLIC_SANITY_DATASET,
       useCdn: false,
-      // studioBasePath: '/admin',
-      // studio: import.meta.env.DEV ? { path: "/admin" } : false,
     }),
     react(),
   ],
