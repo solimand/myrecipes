@@ -6,6 +6,12 @@ on:
   repository_dispatch:
     types: [webhook]
 
+# OPTIMIZATION - Multiple releaseas in sanity studio:
+#   this cancels any previous runs that are still in progress for the same branch
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pages: write
