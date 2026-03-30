@@ -25,7 +25,8 @@ export const recipeType = defineType({
           { title: 'Vellutate/Zuppe', value: 'vellutate' },
           { title: 'Risotti', value: 'risotti' },
           { title: 'Dolci', value: 'dolci' },
-          { title: 'TBD', value: 'tbd' },
+          { title: 'Pesce', value: 'pesce' },
+          { title: 'Carne', value: 'carne' },
         ],
         layout: 'dropdown' // You can also use 'radio' for a different look
       }
