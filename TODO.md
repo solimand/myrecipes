@@ -1,13 +1,13 @@
-# 📝 My Recipes
+# My Recipes
 
-## 🚨 High Priority
+## High Priority
 
-- [ ] fix icon
+- [ ]
 
-## 📅 Upcoming
+## Upcoming
 
 - [ ] implement a search bar with several fields
 
-## Fix
+## Fix
 
-- [ ] original link not shown on all recipes
+- [ ]

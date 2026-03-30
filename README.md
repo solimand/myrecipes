@@ -77,3 +77,17 @@ Your data is stored as JSON in Sanity:
     ```
 
 - To Change Tech: You can delete the Astro folder, start a React/Next.js project, and point it at the same projectId to see your recipes instantly (to test)
+
+## Studio deployment
+
+The files `sanity.cli.ts` and `sanity.config.ts` refer to the creation of studio management website. It is a suite to directly manage the backed dataset. If you change something (for example the hardcoded categories) you need to re-deploy the studio website:
+
+- add correct project id and dataset in the two files related to studio sanity
+- run the command
+
+```node
+npx sanity deploy
+```
+
+- reach the site at `https://solimand-recipes.sanity.studio`
+- do your changes and publish them
